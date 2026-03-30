@@ -7,10 +7,25 @@ public class RentalSystem {
     private List<Customer> customers = new ArrayList<>();
     private RentalHistory rentalHistory = new RentalHistory();
 
-    public void addVehicle(Vehicle vehicle) {
-        vehicles.add(vehicle);
+    //instance variable
+    private static RentalSystem instance;
+    
+    //make the constructor private 
+    private RentalSystem() {}
+    
+
+    // Public accessor method
+    public static RentalSystem getInstance() {
+    if (instance == null) {
+    	instance = new RentalSystem();
+    }
+    return instance;
     }
 
+    public void addVehicle(Vehicle vehicle) {
+    	vehicles.add(vehicle);
+    }
+    
     public void addCustomer(Customer customer) {
         customers.add(customer);
     }

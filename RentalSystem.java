@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.io.FileWriter;
-import java.io.FileReader;
+//import java.io.FileReader;
 import java.util.Scanner;
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class RentalSystem {
     
     //make the constructor private 
     private RentalSystem() {
-//    	loadData(); //add previously saved info
+    	loadData(); //add previously saved info
     }
     
 
@@ -115,7 +115,49 @@ public class RentalSystem {
         }
     }
     
+    
+    private void loadData() {
+//    	[type,plate,make,model,year,status,attribute1,opt(appribute2)]
 
+		try {
+			File file = new File("vehicles.txt");
+			if (!file.exists()) return; //end it early and skip the file not found if its the first run
+			Scanner scanner = new Scanner(file);
+
+    		    while(scanner.hasNextLine()) {
+    		        String txtLine = scanner.nextLine().trim(); // read one line
+    		        
+    		        String[] parts = txtLine.split(","); // split by comma
+    		        Vehicle v =null;
+    		        switch (Integer.parseInt(parts[0])){ 
+    		        	case 1:
+    		        		v =new Car(parts[2],parts[3],Integer.parseInt(parts[4]),Integer.parseInt(parts[6]));
+    		        		break;
+    		        	case 2:
+    		        		v =new Minibus(parts[2],parts[3],Integer.parseInt(parts[4]),Boolean.parseBoolean(parts[6]));
+    		        		break;
+    		        	case 3:
+    		        		v =new PickupTruck(parts[2],parts[3],Integer.parseInt(parts[4]),Double.parseDouble(parts[6]),Boolean.parseBoolean(parts[7]) );
+    		        		break;
+    		        	default:
+    		        		break;
+		        		
+    		        }//prevent adding nulls
+    		        if (v!=null) {    		        	
+	    		        v.setLicensePlate(parts[1]);
+	    		        v.setStatus(Vehicle.VehicleStatus.valueOf(parts[5].trim()) );
+	    		        vehicles.add(v);
+    		        }
+    		    }
+
+    		    scanner.close();
+		} catch (FileNotFoundException exept) {
+    		    System.out.println("File not found");
+		}
+    }
+    
+    
+    
     
     
     

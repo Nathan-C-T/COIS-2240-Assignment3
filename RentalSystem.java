@@ -3,7 +3,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import java.io.FileWriter;
+import java.io.FileReader;
+import java.util.Scanner;
+import java.io.File;
 import java.io.IOException;
+import java.io.FileNotFoundException;
+
 
 public class RentalSystem {
     private List<Vehicle> vehicles = new ArrayList<>();
@@ -14,22 +19,40 @@ public class RentalSystem {
     private static RentalSystem instance;
     
     //make the constructor private 
-    private RentalSystem() {}
+    private RentalSystem() {
+//    	loadData(); //add previously saved info
+    }
     
 
     // Public accessor method
     public static RentalSystem getInstance() {
     if (instance == null) {
     	instance = new RentalSystem();
+    	
     }
     return instance;
     }
     
     public void saveVehicle(Vehicle vehicle){
     	String vInfo = vehicle.getLicensePlate()+","+ vehicle.getMake()+","+ vehicle.getModel()+","+ vehicle.getYear() +","+ vehicle.getStatus();
+
+    	//add vehicle type and attributes
+    	if (vehicle instanceof Car) {
+    		Car c = (Car) vehicle;
+    		vInfo = "1," +vInfo +","+ c.getNumSeats();
+        } else if (vehicle instanceof Minibus) {
+        	Minibus mb = (Minibus) vehicle;
+        	vInfo = "2," +vInfo+"," + mb.getAccessibility();
+        } else if (vehicle instanceof PickupTruck) {
+        	PickupTruck pt = (PickupTruck) vehicle;
+        	vInfo = "3," +vInfo +","+ pt.getCargoSize() +","+ pt.hasTrailer();
+        } else {
+        	vInfo = "0,"+vInfo;
+        }
+    	
     	try {
     		FileWriter fileWrite =new FileWriter("vehicles.txt",true);
-    		fileWrite.write(vInfo+"\n");
+    		fileWrite.write(vInfo+"\n"); //    	[type,plate,make,model,year,status,attribute1,opt(appribute2)]\n
     		// Close the file
             fileWrite.close();
     	}catch(IOException exept){
@@ -62,11 +85,28 @@ public class RentalSystem {
     }
     
     public void vehiclesFileUpdate() {
+    	
         try {
         	//overriding - (not append)
             FileWriter fileWrite = new FileWriter("vehicles.txt"); // overwrite mode
             for (Vehicle v : vehicles) {
+            	
             	String vInfo = v.getLicensePlate()+","+ v.getMake()+","+ v.getModel()+","+ v.getYear() +","+ v.getStatus();
+
+            	//add vehicle type and attributes
+            	if (v instanceof Car) {
+            		Car c = (Car) v;
+            		vInfo = "1," +vInfo +","+ c.getNumSeats();
+                } else if (v instanceof Minibus) {
+                	Minibus mb = (Minibus) v;
+                	vInfo = "2," +vInfo+"," + mb.getAccessibility();
+                } else if (v instanceof PickupTruck) {
+                	PickupTruck pt = (PickupTruck) v;
+                	vInfo = "3," +vInfo +","+ pt.getCargoSize() +","+ pt.hasTrailer();
+                } else {
+                	vInfo = "0,"+vInfo;
+                }
+            	
             	fileWrite.write(vInfo+"\n");
             }
             fileWrite.close();
@@ -74,6 +114,10 @@ public class RentalSystem {
             System.out.println("Error updating vehicles file");
         }
     }
+    
+
+    
+    
     
     public void addVehicle(Vehicle vehicle) {
     	vehicles.add(vehicle);

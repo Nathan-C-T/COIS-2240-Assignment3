@@ -22,4 +22,8 @@ public class Minibus extends Vehicle implements Rentable {
         setStatus(VehicleStatus.Available);
         System.out.println("Minibus " + getLicensePlate() + " has been returned.");
     }
+    
+    public boolean getAccessibility() {
+    	return this.isAccessible;
+    }
 }

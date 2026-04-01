@@ -131,7 +131,7 @@ public class VehicleRentalApp {
 
                     rentalSystem.returnVehicle(vehicleToReturn, customerToReturn, LocalDate.now(), returnFees);
                     break;
-                    
+                
                 case 5:
                     rentalSystem.displayVehicles(Vehicle.VehicleStatus.Available);
                     break;

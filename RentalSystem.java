@@ -85,12 +85,12 @@ public class RentalSystem {
     }
     
     public void vehiclesFileUpdate() {
-    	
+	
         try {
         	//overriding - (not append)
             FileWriter fileWrite = new FileWriter("vehicles.txt"); // overwrite mode
             for (Vehicle v : vehicles) {
-            	
+            		
             	String vInfo = v.getLicensePlate()+","+ v.getMake()+","+ v.getModel()+","+ v.getYear() +","+ v.getStatus();
 
             	//add vehicle type and attributes
@@ -108,13 +108,13 @@ public class RentalSystem {
                 }
             	
             	fileWrite.write(vInfo+"\n");
-            }
+            } 
             fileWrite.close();
         } catch (IOException exept) {
             System.out.println("Error updating vehicles file");
-        }
+        } 
     }
-    
+  
     
     private void loadData() {
 //    	[type,plate,make,model,year,status,attribute1,opt(appribute2)]
@@ -161,14 +161,25 @@ public class RentalSystem {
     
     
     
-    public void addVehicle(Vehicle vehicle) {
+    public boolean addVehicle(Vehicle vehicle) {
+    	if(findVehicleByPlate(vehicle.getLicensePlate()) !=null) {
+    		System.out.println("[FAILURE TO ADD NEW VEHICLE] - This Vehicle plate is already found in the system.");
+    		return false; //dupe
+    	}
+        	
     	vehicles.add(vehicle);
     	saveVehicle(vehicle);
+    	return true;
     }
     
-    public void addCustomer(Customer customer) {
+    public boolean addCustomer(Customer customer) {
+     	if(findCustomerById(customer.getCustomerId()) !=null) {
+     		System.out.println("[FAILURE TO ADD NEW CUSTOMER] - This ID is already in the system.");
+    		return false; //dupe
+    	}
         customers.add(customer);
         saveCustomer(customer);
+        return true;
     }
 
     public void rentVehicle(Vehicle vehicle, Customer customer, LocalDate date, double amount) {
@@ -274,7 +285,7 @@ public class RentalSystem {
                 return v;
             }
         }
-        return null;
+        return null; //null meaning not found
     }
     
     public Customer findCustomerById(int id) {

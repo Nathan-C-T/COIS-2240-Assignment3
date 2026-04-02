@@ -36,6 +36,22 @@ public abstract class Vehicle {
         return input.substring(0, 1).toUpperCase() +input.substring(1).toLowerCase();
     }
     
+    //task2 -pt1
+    private boolean isValidPlate(String plate){
+    	boolean valid= true;
+    	if (plate != null && plate.isEmpty() ==false && plate.length() ==6) {
+    		for(int i=0;i<6;i++) {
+    			if(i<3) {
+    				valid =valid && Character.isLetter(plate.charAt(i));
+    			} else {
+    				valid =valid && Character.isDigit(plate.charAt(i));
+    			}
+    	}
+    		
+    	}
+    	return valid;
+    }
+    
 
     public void setLicensePlate(String plate) {
         this.licensePlate = plate == null ? null : plate.toUpperCase();

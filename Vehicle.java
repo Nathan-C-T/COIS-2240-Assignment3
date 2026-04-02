@@ -54,7 +54,11 @@ public abstract class Vehicle {
     
 
     public void setLicensePlate(String plate) {
-        this.licensePlate = plate == null ? null : plate.toUpperCase();
+    	if(isValidPlate(plate)) {    		
+    		this.licensePlate = plate == null ? null : plate.toUpperCase();
+		} else {
+			throw new IllegalArgumentException("[FAILED TO SET PLATE] - invalid plate format, must be 3 letters followed by 3 numbers"); 
+		}
     }
 
     public void setStatus(VehicleStatus status) {

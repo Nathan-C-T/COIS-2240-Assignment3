@@ -38,18 +38,24 @@ public abstract class Vehicle {
     
     //task2 -pt1
     private boolean isValidPlate(String plate){
-    	boolean valid= true;
-    	if (plate != null && plate.isEmpty() ==false && plate.length() ==6) {
-    		for(int i=0;i<6;i++) {
-    			if(i<3) {
-    				valid =valid && Character.isLetter(plate.charAt(i));
-    			} else {
-    				valid =valid && Character.isDigit(plate.charAt(i));
-    			}
+    	
+    	if (plate == null || plate.isEmpty() || plate.length() !=6) {
+    		return false;
     	}
+    	
+		for(int i=0;i<6;i++) {
+			if(i<3) {
+				if(Character.isLetter(plate.charAt(i)) ==false) {
+					return false;
+				}
+			} else {
+				if(Character.isDigit(plate.charAt(i))==false) {
+					return false;
+				}
+			}
     		
     	}
-    	return valid;
+    	return true;
     }
     
 

@@ -25,6 +25,7 @@ public class VehicleRentalApp {
                     int type = scanner.nextInt();
                     scanner.nextLine();
 
+//                    String plate =null; 
                     System.out.print("Enter license plate: ");
                     String plate = scanner.nextLine().toUpperCase();
                     System.out.print("Enter make: ");
@@ -59,8 +60,12 @@ public class VehicleRentalApp {
 		            }
                     
                     if (vehicle != null){
-	                    vehicle.setLicensePlate(plate);
-	                    rentalSystem.addVehicle(vehicle);
+                    	try{
+                    		vehicle.setLicensePlate(plate);
+                    		rentalSystem.addVehicle(vehicle);
+                    	} catch(IllegalArgumentException exept) {
+                    		System.out.print("ERROR: Invalid Plate");
+                    	}
                     }
                     else {
 	                    System.out.println("Vehicle not added successfully.");

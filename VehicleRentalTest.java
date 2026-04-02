@@ -2,6 +2,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
+
+
 
 class VehicleRentalTest {
 
@@ -60,6 +64,19 @@ class VehicleRentalTest {
 		assertFalse(reReturned );
 		
 	}
+	
+	@Test
+    void testSingletonRentalSystem()throws Exception {
+
+        Constructor<RentalSystem> constructor = RentalSystem.class.getDeclaredConstructor();
+
+        int modifiers = constructor.getModifiers();
+        assertTrue(Modifier.isPrivate(modifiers), "RentalSystem constructor is private");
+
+        //singleton instance
+        RentalSystem instance = RentalSystem.getInstance();
+        assertNotNull(instance, "should return a non-null RentalSystem instance");
+    }
 	
 	
 }
